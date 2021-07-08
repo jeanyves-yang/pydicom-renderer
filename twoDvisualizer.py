@@ -10,6 +10,7 @@ from matplotlib.widgets import Slider
 def load_scan(path):
     slices = [pydicom.dcmread(path + '/' + s) for s in               
               os.listdir(path)]
+    print(slices[0])
     slices = [s for s in slices if 'SliceLocation' in s]
     slices.sort(key = lambda x: int(x.InstanceNumber))
     try:
@@ -27,7 +28,9 @@ def get_pixels_value(scans):
     return np.array(image, dtype=np.int16)
 
 # set path and load files 
-path = '/Users/imageens/jy_data/Anon_Study - 0/Myo_PC_Series_25/'
+# path = '/Users/imageens/jy_data/Anon_Study - 0/Myo_PC_Series_25/'
+path = '/Users/imageens/4D Flow/Amigo 1/Camcmorphv - 3983/decompressed/No_Name/Camcmorphv - 3983/4D_Flow_SAG_210/'
+
 patient_dicom = load_scan(path)
 patient_pixels = get_pixels_value(patient_dicom)#sanity check
 
@@ -42,8 +45,4 @@ def update(val):
     l.set_data(patient_pixels[idx])
 slidx.on_changed(update)
 
-# plt.imshow(patient_pixels[30], cmap=plt.cm.bone)
 plt.show()
-
-
-# dicom_animation(patient_pixels)
