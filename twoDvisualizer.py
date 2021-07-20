@@ -1,4 +1,5 @@
-# common packages 
+# This file implements an 2D+t viewer using matplotlib.
+
 import numpy as np 
 import os
 from math import *
@@ -9,8 +10,7 @@ from matplotlib.widgets import Slider
 
 def load_scan(path):
     slices = [pydicom.dcmread(path + '/' + s) for s in               
-              os.listdir(path)]
-    print(slices[0])
+              os.listdir(path) if '.dcm' in s]
     slices = [s for s in slices if 'SliceLocation' in s]
     slices.sort(key = lambda x: int(x.InstanceNumber))
     try:
@@ -29,7 +29,13 @@ def get_pixels_value(scans):
 
 # set path and load files 
 # path = '/Users/imageens/jy_data/Anon_Study - 0/Myo_PC_Series_25/'
-path = '/Users/imageens/4D Flow/Amigo 1/Camcmorphv - 3983/decompressed/No_Name/Camcmorphv - 3983/4D_Flow_SAG_210/'
+# path = '/Users/imageens/jy_data/4D FLOW/Amigo 1/Camcmorphv - 3983/4D_Flow_SAG_211/'
+path = '/Users/imageens/imageenslibrary_python/imageens/Data/triggertime_x_331'
+# path = '/Users/imageens/imageenslibrary_python/imageens/Data/triggertime_331'
+
+# file: x -> z
+# file: y -> x
+# file: z -> y
 
 patient_dicom = load_scan(path)
 patient_pixels = get_pixels_value(patient_dicom)#sanity check
@@ -41,7 +47,6 @@ axidx = plt.axes([0.15, 0.02, 0.65, 0.03])
 slidx = Slider(axidx, 'index', valinit=idx0, valmin=0, valmax=len(patient_pixels) -1, valfmt='%0.0f')
 def update(val):
     idx = int(slidx.val)
-    print(idx)
     l.set_data(patient_pixels[idx])
 slidx.on_changed(update)
 

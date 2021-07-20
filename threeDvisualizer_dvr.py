@@ -11,6 +11,8 @@ import scipy.ndimage
 
 from scipy.interpolate import interpn
 
+from time import process_time
+
 def load_scan(path):
     slices = [pydicom.dcmread(path + '/' + s) for s in               
               os.listdir(path)]
@@ -60,6 +62,7 @@ def resample(image, scan, new_spacing=[1,1,1]):
 # print(imgs_after_resamp)
 
 Nangles = 10
+t1_start = process_time() 
 for i in range(Nangles):
     
     print('Rendering Scene ' + str(i+1) + ' of ' + str(Nangles) + '.\n')
@@ -95,16 +98,18 @@ for i in range(Nangles):
     image = np.clip(image,0.0,1.0)
     
     # Plot Volume Rendering
-    plt.figure(figsize=(4,4), dpi=80)
+    # plt.figure(figsize=(4,4), dpi=80)
     
-    plt.imshow(image)
-    plt.axis('off')
+    # plt.imshow(image)
+    # plt.axis('off')
     # plt.show()
     
     # Save figure
-    plt.savefig('volumerender' + str(i) + '.png',dpi=240,  bbox_inches='tight', pad_inches = 0)
+    # plt.savefig('volumerender' + str(i) + '.png',dpi=240,  bbox_inches='tight', pad_inches = 0)
 
+t1_stop = process_time() 
 
+print("Elapsed time in seconds:", t1_stop - t1_start) 
 
 # Plot Simple Projection -- for Comparison
 plt.figure(figsize=(4,4), dpi=80)

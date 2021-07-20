@@ -7,11 +7,9 @@ import os
 from math import *
 import matplotlib.pyplot as plt
 import pydicom
-from functools import reduce# reading in dicom files
 import scipy.ndimage
 
 from plotly import __version__
-from plotly.offline import iplot
 from plotly import figure_factory as FF
 from plotly.graph_objs import *
 
